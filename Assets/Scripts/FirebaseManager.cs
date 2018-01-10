@@ -97,25 +97,6 @@ public class FirebaseManager : Singleton<FirebaseManager>
         firebaseAuth = FirebaseAuth.DefaultInstance;
         firebaseAuth.StateChanged += AuthStateChanged;
         firebaseAuth.IdTokenChanged += IdTokenChanged;
-
-        // Specify valid options to construct a secondary authentication object.
-        //if (otherAuthOptions != null &&
-        //    !(string.IsNullOrEmpty(otherAuthOptions.ApiKey) ||
-        //      string.IsNullOrEmpty(otherAuthOptions.AppId) ||
-        //      string.IsNullOrEmpty(otherAuthOptions.ProjectId)))
-        //{
-        //    try
-        //    {
-        //        otherAuth = FirebaseAuth.GetAuth(FirebaseApp.Create(
-        //          otherAuthOptions, "Secondary"));
-        //        otherAuth.StateChanged += AuthStateChanged;
-        //        otherAuth.IdTokenChanged += IdTokenChanged;
-        //    }
-        //    catch (Exception)
-        //    {
-        //        Debug.Log("ERROR: Failed to initialize secondary authentication object.");
-        //    }
-        //}
     }
 
     /// <summary>
@@ -211,6 +192,7 @@ public class FirebaseManager : Singleton<FirebaseManager>
             string newDisplayName = displayName;
             Task task = firebaseAuth.CreateUserWithEmailAndPasswordAsync(email, password)
                 .ContinueWith(HandleCreateUserAsync);
+            //DialogManager.Instance.ShowPreloader("Sign-up", "Waiting for sign up...");
             DebugManager.Instance.ShowLog("Sign-up", "Sign-up operation request.");
             //return firebaseAuth.CreateUserWithEmailAndPasswordAsync(email, password)
             //  .ContinueWith((task) =>
@@ -377,6 +359,80 @@ public class FirebaseManager : Singleton<FirebaseManager>
     }
     #endregion
 
+    #region Sign in with Facebook
+    public Task SignInFacebook()
+    {
+        if (firebaseAuth != null)
+        {
+            string accessToken = FacebookManager.Instance.GetAccessTokenFacebook();
+            if (string.IsNullOrEmpty(accessToken))
+            {
+                DialogManager.Instance.ShowDialog("Sign-in Facebook", "AccessToken facebook null");
+                DebugManager.Instance.ShowLog("Sign-in Facebook", "AccessToken facebook null");
+                return Task.FromResult(0);
+            }
+            Credential credential = FacebookAuthProvider.GetCredential(accessToken);
+            Task task = firebaseAuth.SignInWithCredentialAsync(credential)
+                .ContinueWith(HandleSignInFacebook);
+            //DialogManager.Instance.ShowPreloader("Sign-in", "Waiting for sign in...");
+            DebugManager.Instance.ShowLog("Sign-in", "Sign-in facebook operation request.");
+
+            return task;
+        }
+        else
+        {
+            // Nothing to update, so just return a completed Task.
+            return Task.FromResult(0);
+        }
+    }
+
+    private void HandleSignInFacebook(Task<FirebaseUser> authTask)
+    {
+        TaskCompletion(authTask, "Sign-in Facebook");
+    }
+    #endregion
+
+    #region Sign in with PhoneNumber
+    public Task SignInPhoneNumber(string phoneNumber)
+    {
+        PhoneAuthProvider provider = PhoneAuthProvider.GetInstance(firebaseAuth);
+        uint phoneAuthTimeoutMs = 60;
+        provider.VerifyPhoneNumber(phoneNumber, phoneAuthTimeoutMs, null,
+              verificationCompleted: (credential) =>
+              {
+                  // Auto-sms-retrieval or instant validation has succeeded (Android only).
+                  // There is no need to input the verification code.
+                  // `credential` can be used instead of calling GetCredential().
+                  DebugManager.Instance.ShowLog("SignInPhoneNumber", "verificationCompleted=>credential: " + credential);
+              },
+              verificationFailed: (error) =>
+              {
+                  // The verification code was not sent.
+                  // `error` contains a human readable explanation of the problem.
+                  DebugManager.Instance.ShowLog("SignInPhoneNumber", "verificationFailed=>error: " + error.ToString());
+              },
+              codeSent: (id, token) =>
+              {
+                  // Verification code was successfully sent via SMS.
+                  // `id` contains the verification id that will need to passed in with
+                  // the code from the user when calling GetCredential().
+                  // `token` can be used if the user requests the code be sent again, to
+                  // tie the two requests together.
+                  DebugManager.Instance.ShowLog("SignInPhoneNumber", "codeSent=>id: " + id.ToString());
+                  DebugManager.Instance.ShowLog("SignInPhoneNumber", "codeSent=>token: " + token.ToString());
+              },
+              codeAutoRetrievalTimeOut: (id) =>
+              {
+                  // Called when the auto-sms-retrieval has timed out, based on the given
+                  // timeout parameter.
+                  // `id` contains the verification id of the request that timed out.
+                  DebugManager.Instance.ShowLog("SignInPhoneNumber", "codeAutoRetrievalTimeOut=>id: " + id.ToString());
+              });
+
+        return Task.FromResult(0);
+    }
+    #endregion
+
     /// <summary>
     /// To write data to the Database, you need an instance of DatabaseReference
     /// </summary>
@@ -463,6 +519,7 @@ public class FirebaseManager : Singleton<FirebaseManager>
                 displayName = tempUser.DisplayName;
                 DebugManager.Instance.ShowLog("AuthStateChanged", "Signed in " + tempUser.UserId);
                 DebugManager.Instance.ShowLog("AuthStateChanged", "displayName: " + displayName);
+                DebugManager.Instance.ShowLog("AuthStateChanged", "photo_url: " + tempUser.PhotoUrl);
                 //DisplayDetailedUserInfo(responseUser, 1);
                 return;
             }

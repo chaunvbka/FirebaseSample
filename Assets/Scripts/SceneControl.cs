@@ -1,13 +1,16 @@
-﻿using System.Collections;
+﻿using Facebook.Unity;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Threading.Tasks;
 
 public class SceneControl : MonoBehaviour
 {
     public Button btnSignup;
     public InputField inputMail;
     public InputField inputPass;
+    public InputField inputPhone;
 
     // Use this for initialization
     void Start()
@@ -15,6 +18,8 @@ public class SceneControl : MonoBehaviour
         DebugManager.Instance.Create();
         FirebaseManager.Instance.Create();
         FirebaseManager.Instance.CheckDependenciesAndInitFirebase();
+        FacebookManager.Instance.Create();
+        FacebookManager.Instance.FBInit();
 
         if (btnSignup != null)
         {
@@ -39,6 +44,7 @@ public class SceneControl : MonoBehaviour
     public void SignOut()
     {
         FirebaseManager.Instance.SignOut();
+        FacebookManager.Instance.FBLogOut();
     }
 
     public void SignUpEmailPassword()
@@ -52,6 +58,34 @@ public class SceneControl : MonoBehaviour
             email = inputMail.text;
             password = inputPass.text;
             FirebaseManager.Instance.SignUpEmailPassword(email, password);
+        }
+    }
+
+    public void SignInPhoneNumber()
+    {
+        string phone = "";
+        if (inputPhone != null)
+        {
+            phone = inputPhone.text;
+            FirebaseManager.Instance.SignInPhoneNumber(phone);
+        }
+    }
+
+    public void SignInFacebook()
+    {
+        FacebookManager.Instance.FBLogIn(HandleLogInResult);
+
+    }
+
+    private void HandleLogInResult(bool result)
+    {
+        if (result)
+        {
+            FirebaseManager.Instance.SignInFacebook();
+        }
+        else
+        {
+            DialogManager.Instance.ShowDialog("Sign-in facebook", "cannot login facebook.");
         }
     }
 
