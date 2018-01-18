@@ -8,22 +8,66 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:992739635981:android:e5f438ae9ae9190b",
+        "mobilesdk_app_id": "1:992739635981:android:63de0f15d8cc3cb5",
         "android_client_info": {
-          "package_name": "com.oev.fbsample"
+          "package_name": "com.google.firebase.unity.auth.testapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "992739635981-a6tng7al5hc1oltigrocpo9v4kfunuv4.apps.googleusercontent.com",
+          "client_id": "992739635981-5jgc7vovnqe2fo827ccmplvddov9fr8v.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "992739635981-jd2d560558s897pkr6bifc7mt0todndm.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.oev.fbsample",
-            "certificate_hash": "b0c4a44f75332b176da13c29b003d811db8708af"
+            "package_name": "com.google.firebase.unity.auth.testapp",
+            "certificate_hash": "5dfdf23c5aa62eb9a41e7d62ede2f1ab2ecbde27"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBykD7Vl5Zjyd4q0pSaXu27MchyORoNdDQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "992739635981-5jgc7vovnqe2fo827ccmplvddov9fr8v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:992739635981:android:789727fbe0768c39",
+        "android_client_info": {
+          "package_name": "com.ssp.fbsample"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "992739635981-75gkte87rlhiuvmnbofel4vrb472l6st.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ssp.fbsample",
+            "certificate_hash": "5dfdf23c5aa62eb9a41e7d62ede2f1ab2ecbde27"
           }
         },
         {
-          "client_id": "992739635981-t8sgck0p143pff8c2m9hok3higdoqd4f.apps.googleusercontent.com",
+          "client_id": "992739635981-5jgc7vovnqe2fo827ccmplvddov9fr8v.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -40,7 +84,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "992739635981-t8sgck0p143pff8c2m9hok3higdoqd4f.apps.googleusercontent.com",
+              "client_id": "992739635981-5jgc7vovnqe2fo827ccmplvddov9fr8v.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

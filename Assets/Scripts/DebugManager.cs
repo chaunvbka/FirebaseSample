@@ -19,6 +19,11 @@ public class DebugManager : Singleton<DebugManager>
         //string logText = "123456";
         //Debug.LogError(logText.Length);
         //Debug.Log(logText.Substring(3));
+
+        //For testing
+        //Debug.Log(Application.dataPath);
+        //FirebaseData data = new FirebaseData();
+        //FileManager<FirebaseData>.WriteToFile(Application.dataPath + "/FileData/data.json", data);
     }
 
     //public override void Create()

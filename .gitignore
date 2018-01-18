@@ -23,9 +23,10 @@ ExportedObj/
 *.vs
 
 
-# Unity3D generated meta files
+# Unity3D files
 #*.meta
 *.keystore*
+*.json
 
 # Unity3D Generated File On Crash Reports
 sysinfo.txt
@@ -50,6 +51,10 @@ sysinfo.txt
 # FacebookSDK stuff
 /Assets/FacebookSDK/
 /Assets/FacebookSDK.meta
+
+# Ignore GoogleSignIn plugin
+/Assets/GoogleSignIn/
+/Assets/GoogleSignIn.meta
 
 # Ignore Plugins folder
 /Assets/Plugins/

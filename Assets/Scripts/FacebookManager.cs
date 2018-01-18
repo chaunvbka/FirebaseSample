@@ -39,9 +39,11 @@ public class FacebookManager : Singleton<FacebookManager>
     }
 
     private FirebaseDelegate<bool> LoginResult;
+    private FirebaseDelegate<bool> InitResult;
 
-    public void FBInit()
+    public void FBInit(FirebaseDelegate<bool> callback = null)
     {
+        this.InitResult = callback;
         title = "FBInitAndLogIn";
 
         if (!FB.IsInitialized)
@@ -60,6 +62,11 @@ public class FacebookManager : Singleton<FacebookManager>
         DebugManager.Instance.ShowLog(title, "Status: " + Status);
         DebugManager.Instance.ShowLog(title, "IsInitialized: " + FB.IsInitialized.ToString());
         DebugManager.Instance.ShowLog(title, "IsLoggedIn: " + FB.IsLoggedIn.ToString());
+
+        if (this.InitResult != null)
+        {
+            this.InitResult(true);
+        }
     }
 
     private void OnHideUnity(bool isGameShown)
@@ -145,11 +152,17 @@ public class FacebookManager : Singleton<FacebookManager>
         }
     }
 
+    private IEnumerator WaitTime(float time)
+    {
+        yield return new WaitForSeconds(time);
+    }
+
     public string GetAccessTokenFacebook()
     {
         title = "GetAccessTokenFacebook";
         string token = "";
-        if (loginSuccess)
+
+        if (this.loginSuccess)
         {
             if (AccessToken.CurrentAccessToken != null)
             {

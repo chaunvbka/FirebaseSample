@@ -1,5 +1,5 @@
 Keystore debug pass: android 
-Create SHA1 Fingerprint: keytool -list -v -keystore C:\Users\Admin\.android\debug.keystore -alias androiddebugkey -storepass android -keypass android
+Create SHA1 Fingerprint: keytool -list -v -keystore C:\Users\NC\.android\debug.keystore -alias androiddebugkey -storepass android -keypass android
 
 Create keyhashes:
 keytool -exportcert -alias keystorealias -keystore C:\yourkeystore\folder\keystore.jks | openssl sha1 -binary | openssl base64
@@ -19,5 +19,6 @@ Android/sdk/platform-tools run: adb logcat
 FirebaseSDK
 facebook-unity-sdk-7.10.1.unitypackage
 play-services-resolver-1.2.59.0.unitypackage
+google-signin-plugin-1.0.2.unitypackage
 
 
